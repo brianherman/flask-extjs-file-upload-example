@@ -6,8 +6,9 @@ from flask import Flask, request, redirect, url_for
 from flask import send_from_directory
 from flask import render_template
 from werkzeug import secure_filename
+import subprocess
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['c','cpp'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'uploads')
@@ -27,6 +28,7 @@ def upload_file():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file_url = '/uploads/%s'%filename
+        process = subprocess.Popen(["/usr/bin/emcc", app.config['UPLOAD_FOLDER']+'/'+filename,  '-o ' + filename+'.bin'], stdout=subprocess.PIPE)
         return '''\
 {
     "success":true, // note this is Boolean, not string
@@ -48,4 +50,4 @@ def uploaded_file(filename):
                                filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
