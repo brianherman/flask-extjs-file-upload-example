@@ -1,4 +1,10 @@
-Welcome back::
+This is a web based compiler for llvm.
+======================================
+
+Installation
+=============================
+Install emscripten and llvm.
+Welcome Back::
 
     pythonbrew use Python-2.7.1
     source $HOME/.venvburrito/startup.sh
